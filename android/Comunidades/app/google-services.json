@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "589050190095",
+    "firebase_url": "https://comunidades-2bb2a.firebaseio.com",
+    "project_id": "comunidades-2bb2a",
+    "storage_bucket": "comunidades-2bb2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589050190095:android:f9ab02993a10cf9f",
+        "android_client_info": {
+          "package_name": "br.com.sovi.comunidades"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "589050190095-lod8mmb96f0i2gg4q5coergf4jjvqf6f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.sovi.comunidades",
+            "certificate_hash": "048bd3fbbd5f3b769baacf5dc81757182bf70c6b"
+          }
+        },
+        {
+          "client_id": "589050190095-k6lrjjl002i7m44ni75okd2ickr7e9qs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlTXzepJZWQI_qNTtmWK1V3jSmh4UQCPs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "589050190095-k6lrjjl002i7m44ni75okd2ickr7e9qs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
