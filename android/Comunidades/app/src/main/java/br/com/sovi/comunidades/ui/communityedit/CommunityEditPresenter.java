@@ -13,11 +13,14 @@ import java.util.Map;
 import br.com.sovi.comunidades.firebase.db.FirebaseConstants;
 import br.com.sovi.comunidades.firebase.db.model.Community;
 import br.com.sovi.comunidades.ui.base.BasePresenter;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleObserver;
 import io.reactivex.SingleOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class CommunityEditPresenter extends BasePresenter {
 
@@ -31,27 +34,27 @@ public class CommunityEditPresenter extends BasePresenter {
     }
 
     public void saveCommunity(CommunityEditVo vo) {
-        final Community bean = fromVoToBean(vo);
+        Community bean = fromVoToBean(vo);
 
-        Single.create(new SingleOnSubscribe<Community>() {
-            @Override
-            public void subscribe(SingleEmitter<Community> emitter) throws Exception {
-                DatabaseReference child = FirebaseDatabase.getInstance()
-                        .getReference(FirebaseConstants.DATABASE_REFERENCE)
-                        .child(FirebaseConstants.TABLE_COMMUNITIES);
+        Single.create((SingleOnSubscribe<Community>) emitter -> {
+            DatabaseReference child = FirebaseDatabase.getInstance()
+                    .getReference(FirebaseConstants.DATABASE_REFERENCE)
+                    .child(FirebaseConstants.TABLE_COMMUNITIES);
 
-                if (TextUtils.isEmpty(bean.getId())) {
-                    DatabaseReference push = child.push();
-                    bean.setId(push.getKey());
-                }
-
-                Map<String, Object> map = new HashMap<>();
-                map.put(bean.getId(), bean);
-                child.updateChildren(map);
-
-                emitter.onSuccess(bean);
+            if (TextUtils.isEmpty(bean.getId())) {
+                DatabaseReference push = child.push();
+                bean.setId(push.getKey());
             }
-        }).subscribe(new SingleObserver<Community>() {
+
+            Map<String, Object> map = new HashMap<>();
+            map.put(bean.getId(), bean);
+            child.updateChildren(map);
+
+            emitter.onSuccess(bean);
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Community>() {
             @Override
             public void onSubscribe(Disposable d) {
             }

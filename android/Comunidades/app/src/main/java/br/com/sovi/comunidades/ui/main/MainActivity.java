@@ -22,18 +22,27 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import br.com.sovi.comunidades.R;
+import br.com.sovi.comunidades.ui.communitydetail.CommunityDetailFragment;
 import br.com.sovi.comunidades.ui.communityedit.CommunityEditFragment;
+import br.com.sovi.comunidades.ui.communitysearch.CommunitySearchFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements MainView, CommunityEditFragment.OnCommunityEditFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements MainView,
+        CommunityEditFragment.OnCommunityEditFragmentInteractionListener,
+        CommunitySearchFragment.OnCommunitySearchFragmentInteractionListener,
+        CommunityDetailFragment.OnCommunityDetailFragmentInteractionListener {
 
     public static final int RC_SIGN_IN = 9001;
 
     private MainPresenter presenter;
 
-    private TextView mTextMessage;
+    private CommunityEditFragment communityEditFragment;
+
+    private CommunitySearchFragment communitySearchFragment;
+
+    private CommunityDetailFragment communityDetailFragment;
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
@@ -44,8 +53,9 @@ public class MainActivity extends AppCompatActivity implements MainView, Communi
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        communityDetailFragment = new CommunityDetailFragment();
+
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -61,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Communi
     }
 
     @Override
-    public void showComunityCreation() {
+    public void showCommunityCreation() {
 
     }
 
@@ -110,21 +120,24 @@ public class MainActivity extends AppCompatActivity implements MainView, Communi
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                case R.id.navigation_search:
+                    viewPager.setCurrentItem(0);
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                case R.id.navigation_home:
+
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
                     return true;
             }
             return false;
         }
     };
 
-    private CommunityEditFragment communityEditFragment;
+    @Override
+    public void onCommunityClick(String communityId) {
+        communityDetailFragment.setCommunity(communityId);
+        viewPager.setCurrentItem(1);
+    }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -136,6 +149,11 @@ public class MainActivity extends AppCompatActivity implements MainView, Communi
         public android.support.v4.app.Fragment getItem(int position) {
             switch (position) {
                 case 0:
+                    communitySearchFragment = CommunitySearchFragment.newInstance();
+                    return communitySearchFragment;
+                case 1:
+                    return communityDetailFragment;
+                case 2:
                     communityEditFragment = CommunityEditFragment.newInstance();
                     return communityEditFragment;
 
@@ -146,16 +164,18 @@ public class MainActivity extends AppCompatActivity implements MainView, Communi
 
         @Override
         public int getCount() {
-            return 1;
+            return 2;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Cadastro";
+                    return "Busca";
                 case 1:
-                    return "Vendas";
+                    return "Detalhes";
+                case 2:
+                    return "Criação";
                 default:
                     return null;
             }

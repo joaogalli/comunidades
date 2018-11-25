@@ -54,7 +54,7 @@ public class MainPresenter extends BasePresenter {
         if (currentUser == null) {
             view.showGoogleLogin(mGoogleSignInClient);
         } else {
-            view.showComunityCreation();
+            view.showCommunityCreation();
         }
     }
 
