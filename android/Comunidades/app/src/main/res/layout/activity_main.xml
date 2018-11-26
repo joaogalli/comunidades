@@ -12,6 +12,7 @@
         android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/logoff"
         android:text="Criar comunidade"/>
 
     <Button
@@ -19,10 +20,10 @@
         android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/criarComunidade"
+        android:layout_above="@id/navigation"
         android:text="Logoff"/>
 
-    <android.support.v4.view.ViewPager
+    <br.com.sovi.comunidades.components.NonSwipeableViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

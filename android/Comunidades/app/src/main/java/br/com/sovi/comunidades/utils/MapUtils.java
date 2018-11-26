@@ -1,4 +1,4 @@
-package br.com.sovi.comunidades;
+package br.com.sovi.comunidades.utils;
 
 import java.util.HashMap;
 import java.util.Map;

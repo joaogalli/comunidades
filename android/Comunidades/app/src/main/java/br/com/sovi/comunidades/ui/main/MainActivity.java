@@ -18,6 +18,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 import br.com.sovi.comunidades.R;
+import br.com.sovi.comunidades.components.NonSwipeableViewPager;
 import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
 import br.com.sovi.comunidades.ui.communitydetail.CommunityDetailFragment;
 import br.com.sovi.comunidades.ui.communityedit.CommunityEditFragment;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
     private CommunityDetailFragment communityDetailFragment;
 
     @BindView(R.id.viewPager)
-    ViewPager viewPager;
+    NonSwipeableViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

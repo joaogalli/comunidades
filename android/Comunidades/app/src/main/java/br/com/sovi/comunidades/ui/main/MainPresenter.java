@@ -24,10 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Iterator;
 
-import br.com.sovi.comunidades.MapUtils;
+import br.com.sovi.comunidades.utils.MapUtils;
 import br.com.sovi.comunidades.R;
 import br.com.sovi.comunidades.firebase.db.FirebaseConstants;
-import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
 import br.com.sovi.comunidades.firebase.db.model.FbUser;
 import br.com.sovi.comunidades.service.AuthenticationService;
 import br.com.sovi.comunidades.ui.base.BasePresenter;
