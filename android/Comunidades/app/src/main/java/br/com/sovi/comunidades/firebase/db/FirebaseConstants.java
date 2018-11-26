@@ -9,4 +9,7 @@ public interface FirebaseConstants {
 
     String TABLE_COMMUNITIES = "communities";
 
+    String TABLE_COMMUNITY_SUBSCRIPTION = "community_subscription";
+
+    String TABLE_USER_COMMUNITIES = "user_communities";
 }

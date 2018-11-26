@@ -14,6 +14,7 @@ import br.com.sovi.comunidades.R;
 import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class CommunityDetailFragment extends Fragment implements CommunityDetailView {
 
@@ -59,6 +60,11 @@ public class CommunityDetailFragment extends Fragment implements CommunityDetail
     public void showCommunity(FbCommunity fbCommunity) {
         nameView.setText(fbCommunity.getName());
         descriptionView.setText(fbCommunity.getDescription());
+    }
+
+    @OnClick(R.id.subscribe)
+    public void onSubscribeClick() {
+        presenter.onSubscribeClick();
     }
 
     @Override

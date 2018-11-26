@@ -143,7 +143,7 @@ public class MainPresenter extends BasePresenter {
                     String key = databaseReference.getKey();
                     fbUser1.setId(key);
 
-                    usersRef.setValue(MapUtils.buildSingleMap(key, fbUser1));
+                    usersRef.child(key).setValue(fbUser1);
 
                     observer.onSuccess(fbUser1);
                 };
