@@ -8,6 +8,8 @@ public class FbCommunity {
 
     private String description;
 
+    private String ownerId;
+
     public String getId() {
         return id;
     }
@@ -30,5 +32,13 @@ public class FbCommunity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 }

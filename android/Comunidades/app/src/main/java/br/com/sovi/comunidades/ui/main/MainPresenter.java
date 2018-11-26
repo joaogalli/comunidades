@@ -29,6 +29,7 @@ import br.com.sovi.comunidades.R;
 import br.com.sovi.comunidades.firebase.db.FirebaseConstants;
 import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
 import br.com.sovi.comunidades.firebase.db.model.FbUser;
+import br.com.sovi.comunidades.service.AuthenticationService;
 import br.com.sovi.comunidades.ui.base.BasePresenter;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -49,6 +50,8 @@ public class MainPresenter extends BasePresenter {
 
     private GoogleSignInClient mGoogleSignInClient;
 
+    private AuthenticationService authenticationService;
+
     public MainPresenter(Context context, MainView view) {
         super(context);
         this.view = view;
@@ -66,6 +69,8 @@ public class MainPresenter extends BasePresenter {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(getContext(), gso);
+
+        authenticationService = new AuthenticationService(getContext());
     }
 
     public void onCriarComunidadeClick() {
@@ -152,12 +157,14 @@ public class MainPresenter extends BasePresenter {
 
             @Override
             public void onSuccess(FbUser fbUser) {
+                authenticationService.setAuthenticatedUser(fbUser);
                 view.hideProgressDialog();
                 view.showLoginSuccessful();
             }
 
             @Override
             public void onError(Throwable e) {
+                authenticationService.logout();
                 // TODO erro ao registrar
                 // TODO deslogar e começar denovo
                 view.hideProgressDialog();

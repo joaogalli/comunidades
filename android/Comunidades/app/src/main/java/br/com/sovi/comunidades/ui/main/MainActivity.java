@@ -18,6 +18,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 import br.com.sovi.comunidades.R;
+import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
 import br.com.sovi.comunidades.ui.communitydetail.CommunityDetailFragment;
 import br.com.sovi.comunidades.ui.communityedit.CommunityEditFragment;
 import br.com.sovi.comunidades.ui.communitysearch.CommunitySearchFragment;
@@ -31,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements MainView,
         CommunityDetailFragment.OnCommunityDetailFragmentInteractionListener {
 
     public static final int RC_SIGN_IN = 9001;
+    private static final int COMMUNITY_SEARCH_ITEM = 0;
+    private static final int COMMUNITY_DETAIL_ITEM = 1;
+    private static final int COMMUNITY_EDIT_ITEM = 2;
 
     private MainPresenter presenter;
 
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     @Override
     public void showCommunityCreation() {
-
+        viewPager.setCurrentItem(COMMUNITY_EDIT_ITEM);
     }
 
     @OnClick(R.id.logoff)
@@ -122,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_search:
-                    viewPager.setCurrentItem(0);
+                    viewPager.setCurrentItem(COMMUNITY_SEARCH_ITEM);
                     return true;
                 case R.id.navigation_home:
 
@@ -137,7 +141,13 @@ public class MainActivity extends AppCompatActivity implements MainView,
     @Override
     public void onCommunityClick(String communityId) {
         communityDetailFragment.setCommunity(communityId);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(COMMUNITY_DETAIL_ITEM);
+    }
+
+    @Override
+    public void onCommunityCreated(FbCommunity fbCommunity) {
+        communityDetailFragment.setCommunity(fbCommunity.getId());
+        viewPager.setCurrentItem(COMMUNITY_DETAIL_ITEM);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -149,12 +159,12 @@ public class MainActivity extends AppCompatActivity implements MainView,
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
             switch (position) {
-                case 0:
+                case COMMUNITY_SEARCH_ITEM:
                     communitySearchFragment = CommunitySearchFragment.newInstance();
                     return communitySearchFragment;
-                case 1:
+                case COMMUNITY_DETAIL_ITEM:
                     return communityDetailFragment;
-                case 2:
+                case COMMUNITY_EDIT_ITEM:
                     communityEditFragment = CommunityEditFragment.newInstance();
                     return communityEditFragment;
 
@@ -165,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override

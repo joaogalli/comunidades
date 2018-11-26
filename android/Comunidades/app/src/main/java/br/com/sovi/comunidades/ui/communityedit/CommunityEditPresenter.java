@@ -12,6 +12,8 @@ import java.util.Map;
 
 import br.com.sovi.comunidades.firebase.db.FirebaseConstants;
 import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
+import br.com.sovi.comunidades.firebase.db.model.FbUser;
+import br.com.sovi.comunidades.service.AuthenticationService;
 import br.com.sovi.comunidades.ui.base.BasePresenter;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -26,9 +28,18 @@ public class CommunityEditPresenter extends BasePresenter {
 
     private FbCommunity currentCommunity;
 
+    private AuthenticationService authenticationService;
+
     public CommunityEditPresenter(Context context, CommunityEditView view) {
         super(context);
         this.view = view;
+    }
+
+    @Override
+    public void init() {
+        super.init();
+
+        authenticationService = new AuthenticationService(getContext());
     }
 
     public void saveCommunity(CommunityEditVo vo) {
@@ -59,7 +70,7 @@ public class CommunityEditPresenter extends BasePresenter {
 
             @Override
             public void onSuccess(FbCommunity fbCommunity) {
-                Toast.makeText(getContext(), "SUCESSO", Toast.LENGTH_SHORT).show();
+                view.onCommunityCreationSuccess(fbCommunity);
             }
 
             @Override
@@ -71,11 +82,15 @@ public class CommunityEditPresenter extends BasePresenter {
     }
 
     private FbCommunity fromVoToBean(CommunityEditVo vo) {
-        if (currentCommunity == null)
+        if (currentCommunity == null) {
             currentCommunity = new FbCommunity();
+
+            FbUser authenticatedUser = authenticationService.getAuthenticatedUser();
+            currentCommunity.setOwnerId(authenticatedUser.getId());
+        }
+
         currentCommunity.setName(vo.getName());
         currentCommunity.setDescription(vo.getDescription());
-
         return currentCommunity;
     }
 }

@@ -9,18 +9,18 @@
 
     <Button
         android:id="@+id/criarComunidade"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Criar comunidade"/>
 
     <Button
         android:id="@+id/logoff"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/criarComunidade"
-        android:text="Criar comunidade"/>
+        android:text="Logoff"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"

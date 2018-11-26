@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import br.com.sovi.comunidades.R;
+import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -76,6 +77,14 @@ public class CommunityEditFragment extends Fragment implements CommunityEditView
         mListener = null;
     }
 
+    @Override
+    public void onCommunityCreationSuccess(FbCommunity fbCommunity) {
+        if (mListener != null) {
+            mListener.onCommunityCreated(fbCommunity);
+        }
+    }
+
     public interface OnCommunityEditFragmentInteractionListener {
+        void onCommunityCreated(FbCommunity fbCommunity);
     }
 }
