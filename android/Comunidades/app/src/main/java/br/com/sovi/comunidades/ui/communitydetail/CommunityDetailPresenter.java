@@ -8,13 +8,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.com.sovi.comunidades.firebase.db.FirebaseConstants;
-import br.com.sovi.comunidades.firebase.db.model.Community;
+import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
 import br.com.sovi.comunidades.ui.base.BasePresenter;
-import br.com.sovi.comunidades.ui.communitysearch.CommunitySearchVo;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.SingleOnSubscribe;
@@ -32,7 +28,7 @@ public class CommunityDetailPresenter extends BasePresenter {
     }
 
     public void setCommunity(final String communityId) {
-        Single.create((SingleOnSubscribe<Community>) emitter -> {
+        Single.create((SingleOnSubscribe<FbCommunity>) emitter -> {
 
             FirebaseDatabase.getInstance()
                     .getReference(FirebaseConstants.DATABASE_REFERENCE)
@@ -42,8 +38,8 @@ public class CommunityDetailPresenter extends BasePresenter {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                Community community = dataSnapshot.getValue(Community.class);
-                                emitter.onSuccess(community);
+                                FbCommunity fbCommunity = dataSnapshot.getValue(FbCommunity.class);
+                                emitter.onSuccess(fbCommunity);
                             } else {
                                 emitter.onError(new CommunityNotFoundException());
                             }
@@ -57,14 +53,14 @@ public class CommunityDetailPresenter extends BasePresenter {
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new SingleObserver<Community>() {
+        .subscribe(new SingleObserver<FbCommunity>() {
             @Override
             public void onSubscribe(Disposable d) {
             }
 
             @Override
-            public void onSuccess(Community community) {
-                view.showCommunity(community);
+            public void onSuccess(FbCommunity fbCommunity) {
+                view.showCommunity(fbCommunity);
             }
 
             @Override

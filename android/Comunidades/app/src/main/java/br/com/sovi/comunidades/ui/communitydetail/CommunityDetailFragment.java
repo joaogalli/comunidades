@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import br.com.sovi.comunidades.R;
-import br.com.sovi.comunidades.firebase.db.model.Community;
+import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -56,9 +56,9 @@ public class CommunityDetailFragment extends Fragment implements CommunityDetail
     }
 
     @Override
-    public void showCommunity(Community community) {
-        nameView.setText(community.getName());
-        descriptionView.setText(community.getDescription());
+    public void showCommunity(FbCommunity fbCommunity) {
+        nameView.setText(fbCommunity.getName());
+        descriptionView.setText(fbCommunity.getDescription());
     }
 
     @Override

@@ -1,7 +1,7 @@
 package br.com.sovi.comunidades.ui.communitydetail;
 
-import br.com.sovi.comunidades.firebase.db.model.Community;
+import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
 
 public interface CommunityDetailView {
-    void showCommunity(Community community);
+    void showCommunity(FbCommunity fbCommunity);
 }

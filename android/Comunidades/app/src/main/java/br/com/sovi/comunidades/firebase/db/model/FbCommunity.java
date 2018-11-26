@@ -1,6 +1,6 @@
 package br.com.sovi.comunidades.firebase.db.model;
 
-public class Community {
+public class FbCommunity {
 
     private String id;
 

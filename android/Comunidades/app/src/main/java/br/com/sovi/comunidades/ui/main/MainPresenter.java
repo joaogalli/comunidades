@@ -16,9 +16,28 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.Iterator;
+
+import br.com.sovi.comunidades.MapUtils;
 import br.com.sovi.comunidades.R;
+import br.com.sovi.comunidades.firebase.db.FirebaseConstants;
+import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
+import br.com.sovi.comunidades.firebase.db.model.FbUser;
 import br.com.sovi.comunidades.ui.base.BasePresenter;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.SingleSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -68,21 +87,95 @@ public class MainPresenter extends BasePresenter {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            view.showLoginSuccessful();
-//                            updateUI(user);
+                            registerFirebaseUser(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
                         }
-
-                        // [START_EXCLUDE]
-                        view.hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
+    }
+
+    private void registerFirebaseUser(FirebaseUser user) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance()
+                .getReference(FirebaseConstants.DATABASE_REFERENCE)
+                .child(FirebaseConstants.TABLE_USER);
+
+
+        Single.create((SingleOnSubscribe<FbUser>) emitter -> {
+            usersRef
+            .orderByChild("uid")
+            .equalTo(user.getUid())
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                        FbUser value = iterator.next().getValue(FbUser.class);
+                        emitter.onSuccess(value);
+                    } else {
+                        emitter.onSuccess(new FbUser());
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    emitter.onError(databaseError.toException());
+                }
+            });
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        .flatMap((Function<FbUser, SingleSource<FbUser>>) fbUser -> {
+            if (fbUser.getUid() != null) {
+                return observer -> observer.onSuccess(fbUser);
+            } else {
+                return observer -> {
+                    FbUser fbUser1 = buildFbUser(user);
+
+                    DatabaseReference databaseReference = usersRef.push();
+                    String key = databaseReference.getKey();
+                    fbUser1.setId(key);
+
+                    usersRef.setValue(MapUtils.buildSingleMap(key, fbUser1));
+
+                    observer.onSuccess(fbUser1);
+                };
+            }
+        })
+        .subscribe(new SingleObserver<FbUser>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+            }
+
+            @Override
+            public void onSuccess(FbUser fbUser) {
+                view.hideProgressDialog();
+                view.showLoginSuccessful();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                // TODO erro ao registrar
+                // TODO deslogar e começar denovo
+                view.hideProgressDialog();
+            }
+        });
+    }
+
+    private FbUser buildFbUser(FirebaseUser user) {
+        FbUser fb = new FbUser();
+
+        fb.setName(user.getDisplayName());
+        fb.setEmail(user.getEmail());
+        fb.setUid(user.getUid());
+
+        return fb;
+    }
+
+    public void logoff() {
+        mAuth.signOut();
     }
 }

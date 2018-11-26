@@ -11,11 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.com.sovi.comunidades.firebase.db.FirebaseConstants;
-import br.com.sovi.comunidades.firebase.db.model.Community;
+import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
 import br.com.sovi.comunidades.ui.base.BasePresenter;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
 import io.reactivex.SingleObserver;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,7 +24,7 @@ public class CommunityEditPresenter extends BasePresenter {
 
     private CommunityEditView view;
 
-    private Community currentCommunity;
+    private FbCommunity currentCommunity;
 
     public CommunityEditPresenter(Context context, CommunityEditView view) {
         super(context);
@@ -34,9 +32,9 @@ public class CommunityEditPresenter extends BasePresenter {
     }
 
     public void saveCommunity(CommunityEditVo vo) {
-        Community bean = fromVoToBean(vo);
+        FbCommunity bean = fromVoToBean(vo);
 
-        Single.create((SingleOnSubscribe<Community>) emitter -> {
+        Single.create((SingleOnSubscribe<FbCommunity>) emitter -> {
             DatabaseReference child = FirebaseDatabase.getInstance()
                     .getReference(FirebaseConstants.DATABASE_REFERENCE)
                     .child(FirebaseConstants.TABLE_COMMUNITIES);
@@ -54,13 +52,13 @@ public class CommunityEditPresenter extends BasePresenter {
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<Community>() {
+                .subscribe(new SingleObserver<FbCommunity>() {
             @Override
             public void onSubscribe(Disposable d) {
             }
 
             @Override
-            public void onSuccess(Community community) {
+            public void onSuccess(FbCommunity fbCommunity) {
                 Toast.makeText(getContext(), "SUCESSO", Toast.LENGTH_SHORT).show();
             }
 
@@ -72,9 +70,9 @@ public class CommunityEditPresenter extends BasePresenter {
 
     }
 
-    private Community fromVoToBean(CommunityEditVo vo) {
+    private FbCommunity fromVoToBean(CommunityEditVo vo) {
         if (currentCommunity == null)
-            currentCommunity = new Community();
+            currentCommunity = new FbCommunity();
         currentCommunity.setName(vo.getName());
         currentCommunity.setDescription(vo.getDescription());
 

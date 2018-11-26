@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -13,14 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.sovi.comunidades.firebase.db.FirebaseConstants;
-import br.com.sovi.comunidades.firebase.db.model.Community;
+import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
 import br.com.sovi.comunidades.ui.base.BasePresenter;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class CommunitySearchPresenter extends BasePresenter {
@@ -33,7 +31,7 @@ public class CommunitySearchPresenter extends BasePresenter {
     }
 
     public void search(String pattern) {
-        Single.create((SingleOnSubscribe<List<Community>>) emitter -> {
+        Single.create((SingleOnSubscribe<List<FbCommunity>>) emitter -> {
 
             FirebaseDatabase.getInstance()
                     .getReference(FirebaseConstants.DATABASE_REFERENCE)
@@ -43,11 +41,11 @@ public class CommunitySearchPresenter extends BasePresenter {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                                List<Community> communities = new ArrayList<>();
+                                List<FbCommunity> communities = new ArrayList<>();
                                 for (DataSnapshot child : children) {
                                     try {
-                                        Community community = child.getValue(Community.class);
-                                        communities.add(community);
+                                        FbCommunity fbCommunity = child.getValue(FbCommunity.class);
+                                        communities.add(fbCommunity);
                                     } catch (Exception ex) {
                                         // TODO Crash
                                     }
@@ -66,10 +64,10 @@ public class CommunitySearchPresenter extends BasePresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(communities -> {
                     List<CommunitySearchVo> vos = new ArrayList<>();
-                    for (Community community : communities) {
+                    for (FbCommunity fbCommunity : communities) {
                         CommunitySearchVo vo = new CommunitySearchVo();
-                        vo.setId(community.getId());
-                        vo.setName(community.getName());
+                        vo.setId(fbCommunity.getId());
+                        vo.setName(fbCommunity.getName());
                         vos.add(vo);
                     }
                     return vos;

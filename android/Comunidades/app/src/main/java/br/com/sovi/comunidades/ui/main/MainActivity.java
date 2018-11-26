@@ -8,9 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -18,8 +16,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import br.com.sovi.comunidades.R;
 import br.com.sovi.comunidades.ui.communitydetail.CommunityDetailFragment;
@@ -73,6 +69,11 @@ public class MainActivity extends AppCompatActivity implements MainView,
     @Override
     public void showCommunityCreation() {
 
+    }
+
+    @OnClick(R.id.logoff)
+    public void onLogoffClick() {
+        presenter.logoff();
     }
 
     @Override
