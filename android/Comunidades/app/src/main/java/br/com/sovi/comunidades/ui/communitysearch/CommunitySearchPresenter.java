@@ -2,6 +2,7 @@ package br.com.sovi.comunidades.ui.communitysearch;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,11 +32,14 @@ public class CommunitySearchPresenter extends BasePresenter {
     }
 
     public void search(String pattern) {
-        Single.create((SingleOnSubscribe<List<FbCommunity>>) emitter -> {
 
+        Single.create((SingleOnSubscribe<List<FbCommunity>>) emitter -> {
             FirebaseDatabase.getInstance()
                     .getReference(FirebaseConstants.DATABASE_REFERENCE)
                     .child(FirebaseConstants.TABLE_COMMUNITIES)
+                    .orderByChild("name")
+                    .startAt(pattern)
+                    .endAt(pattern + "\uf8ff")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -47,10 +51,12 @@ public class CommunitySearchPresenter extends BasePresenter {
                                         FbCommunity fbCommunity = child.getValue(FbCommunity.class);
                                         communities.add(fbCommunity);
                                     } catch (Exception ex) {
-                                        // TODO Crash
+                                        emitter.onError(ex);
                                     }
                                 }
                                 emitter.onSuccess(communities);
+                            } else {
+                                emitter.onSuccess(new ArrayList<>());
                             }
                         }
 
@@ -85,7 +91,7 @@ public class CommunitySearchPresenter extends BasePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        // TODO
+                        Toast.makeText(getContext(), "Erro", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

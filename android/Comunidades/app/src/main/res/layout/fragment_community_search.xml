@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Procure por uma comunidade"
+            android:inputType="textCapSentences"
             android:maxLines="1"
             android:singleLine="true"/>
 
@@ -32,11 +33,16 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/searchRecyclerView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/searchLayout"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/searchRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>
