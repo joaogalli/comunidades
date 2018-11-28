@@ -6,6 +6,8 @@ public class CommunitySearchVo {
 
     private String name;
 
+    private String cityState;
+
     public String getId() {
         return id;
     }
@@ -20,5 +22,13 @@ public class CommunitySearchVo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCityState() {
+        return cityState;
+    }
+
+    public void setCityState(String cityState) {
+        this.cityState = cityState;
     }
 }

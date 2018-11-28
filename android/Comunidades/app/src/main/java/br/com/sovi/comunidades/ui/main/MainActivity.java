@@ -23,6 +23,7 @@ import br.com.sovi.comunidades.firebase.db.model.FbCommunity;
 import br.com.sovi.comunidades.ui.communitydetail.CommunityDetailFragment;
 import br.com.sovi.comunidades.ui.communityedit.CommunityEditFragment;
 import br.com.sovi.comunidades.ui.communitysearch.CommunitySearchFragment;
+import br.com.sovi.comunidades.utils.StatesAndCities;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
                     viewPager.setCurrentItem(COMMUNITY_SEARCH_ITEM);
                     return true;
                 case R.id.navigation_home:
-
+                    viewPager.setCurrentItem(COMMUNITY_EDIT_ITEM);
                     return true;
                 case R.id.navigation_notifications:
                     return true;

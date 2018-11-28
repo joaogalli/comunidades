@@ -91,6 +91,9 @@ public class CommunityEditPresenter extends BasePresenter {
 
         currentCommunity.setName(vo.getName());
         currentCommunity.setDescription(vo.getDescription());
+        currentCommunity.setState(vo.getState());
+        currentCommunity.setCity(vo.getCity());
+
         return currentCommunity;
     }
 }

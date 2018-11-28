@@ -39,6 +39,7 @@ public class CommunitySearchRecyclerViewAdapter extends RecyclerView.Adapter<Com
         CommunitySearchVo vo = list.get(i);
 
         viewHolder.nameView.setText(vo.getName());
+        viewHolder.cityStateView.setText(vo.getCityState());
 
         viewHolder.itemView.setOnClickListener(v -> {
             interactionListener.onCommunityClick(vo.getId());
@@ -60,11 +61,13 @@ public class CommunitySearchRecyclerViewAdapter extends RecyclerView.Adapter<Com
         CommunitySearchVo item;
         final View itemView;
         final TextView nameView;
+        final TextView cityStateView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
             nameView = itemView.findViewById(R.id.name);
+            cityStateView = itemView.findViewById(R.id.cityState);
         }
     }
 

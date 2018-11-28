@@ -10,6 +10,10 @@ public class FbCommunity {
 
     private String ownerId;
 
+    private String state;
+
+    private String city;
+
     public String getId() {
         return id;
     }
@@ -40,5 +44,21 @@ public class FbCommunity {
 
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

@@ -68,6 +68,7 @@ public class CommunitySearchPresenter extends BasePresenter {
                         CommunitySearchVo vo = new CommunitySearchVo();
                         vo.setId(fbCommunity.getId());
                         vo.setName(fbCommunity.getName());
+                        vo.setCityState(fbCommunity.getCity() + " - " + fbCommunity.getState());
                         vos.add(vo);
                     }
                     return vos;

@@ -83,6 +83,7 @@ public class CommunityDetailPresenter extends BasePresenter {
             @Override
             public void onError(Throwable e) {
                 // TODO
+                System.out.println("CommunityDetailPresenter.onError");
             }
         });
     }

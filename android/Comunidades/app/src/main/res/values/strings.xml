@@ -8,4 +8,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_search">Procurar</string>
 
+    <!-- Community Edit -->
+    <string name="community_edit_title">Crie sua comunidade</string>
+    <string name="name">Nome da comunidade</string>
+    <string name="description">Descrição</string>
+    <string name="state">Estado</string>
+    <string name="city">Cidade</string>
+
 </resources>
